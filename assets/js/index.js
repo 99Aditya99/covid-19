@@ -9,15 +9,19 @@ async function getDtaFromServer() {
     try {
       let sarverData = await Promise.all([
         fetch('https://api.rootnet.in/covid19-in/stats/latest').then((response) => response.json()),// parse each response as json
-        fetch('https://api.rootnet.in/covid19-in/stats/testing/latest').then((response) => response.json())
+        fetch('https://api.rootnet.in/covid19-in/stats/testing/latest').then((response) => response.json()),
+        fetch('http://newsapi.org/v2/top-headlines?sources=google-news-in&apiKey=6368149cef8a4894adda80122a9a5d8d').then((response)=>{return response.json()}).then((data)=>{return data.articles}), 
+        fetch("https://api.covid19india.org/resources/resources.json").then((response)=>{return response.json()}).then((data)=>{return data.resources})
+    
         ]);
-        let mykeys=["coronaTotalInfo","coronaTesting"]
+        let mykeys=["coronaTotalInfo","coronaTesting","coronaNews","essentialServices"]
         await sarverData.map((data,index)=>{
             console.log("data loaded")
             addDataToSession(mykeys[index],JSON.stringify(data))
+            // console.log(data)
         })
-        await getNewsFromServerAndStoreIntoSeeeion()
-        await getEssentialServicesAndStoreIntoSession()
+        // getNewsFromServerAndStoreIntoSeeeion()
+        // getEssentialServicesAndStoreIntoSession()
         await main()
 
     } catch (error) {
@@ -25,35 +29,7 @@ async function getDtaFromServer() {
     }
   }
 
-function getNewsFromServerAndStoreIntoSeeeion(){
-    key="6368149cef8a4894adda80122a9a5d8d"
-    url=`http://newsapi.org/v2/top-headlines?sources=google-news-in&apiKey=${key}`
-    fetch(url)
-    .then((response)=>{
-            return response.json()
-        })
-    .then((data)=>{
-        addDataToSession("coronaNews",JSON.stringify(data.articles))
-        console.log("News data loaded")
-    })
 
-}
-
-function getEssentialServicesAndStoreIntoSession(){
-    // key="6368149cef8a4894adda80122a9a5d8d"
-    url=`https://api.covid19india.org/resources/resources.json`
-    fetch(url)
-    .then((response)=>{
-            return response.json()
-        })
-    .then((data)=>{
-        // let updatedData = data.resources.filter(mydata => mydata.state=mydata.state.toLowerCase().replace(/\s/g, ""))
-        addDataToSession("essentialServices",JSON.stringify(data.resources))
-        // console.log(data.resources)
-        console.log("essencial services data loaded")
-    })
-
-}
 
 
 function addDataToSession(key,value){
