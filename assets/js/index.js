@@ -170,8 +170,8 @@ class CoronVirusNews{
                 coronaVirusNewsObject.push(news)
             }
         })
-        return coronaVirusNewsObject
-        // return allSessionNews
+        // return coronaVirusNewsObject
+        return allSessionNews
     }
 
     displayNewsIntoWeb=()=>{
