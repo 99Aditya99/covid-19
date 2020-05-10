@@ -3,6 +3,9 @@ window.onload = function() {
         $("#navbarDiv").collapse("hide");
     });
     getDtaFromServer()
+    setTimeout(() => {
+        main()
+    }, 4000);
   };
 
 async function getDtaFromServer() {
@@ -18,11 +21,9 @@ async function getDtaFromServer() {
         await sarverData.map((data,index)=>{
             console.log("data loaded")
             addDataToSession(mykeys[index],JSON.stringify(data))
-            // console.log(data)
+            
         })
-        // getNewsFromServerAndStoreIntoSeeeion()
-        // getEssentialServicesAndStoreIntoSession()
-        await main()
+        // await main()
 
     } catch (error) {
       console.log(error);
